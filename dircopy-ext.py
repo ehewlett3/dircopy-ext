@@ -86,7 +86,7 @@ for pth, drs, fls in srcTree:
 			logEntry = '<tr><td><a href="'+join(des,desDir,fn)+'">'+fn+'</a></td>'
 			print '.',
 		except:
-			logEntry = '<tr><td>'+sys.exc_info()[1]+'</td>'
+			logEntry = '<tr><td>'+str(sys.exc_info()[1])+'</td>'
 			print 'x',
 		logEntry = logEntry+'<td>'+ofn+'</td></tr>\n'
 		log.write(logEntry)
