@@ -68,8 +68,10 @@ logEntry = '<html>\n<head><title>Log for backup of '+src+'</title>\n</head>\n<bo
 log.write(logEntry)
 logEntry = '<th>File</th><th>Source</th>'
 log.write(logEntry)
+print
 
 for pth, drs, fls in srcTree:
+	print pth,
 	for fn in fls:
 		ofn = join(pth, fn)
 		desDir = os.path.splitext(fn)[1][1:].lower()
@@ -79,17 +81,16 @@ for pth, drs, fls in srcTree:
 			os.mkdir(join(des,desDir))
 		if os.path.exists(join(des,desDir,fn)):
 			fn = nextAvailName(join(des,desDir),fn)
-#			lext = len(desDir)
-#			if lext > 0:
-#				lext += 1
-#			cn = 1
-#			while os.path.exists(join(des,desDir,fn[:len(fn)-lext]+'-'+str(cn)+'.'+desDir)):
-#				cn += 1
-#			fn = fn[:len(fn)-lext]+'-'+str(cn)+'.'+desDir
-		logEntry = '<tr><td><a href="'+join(des,desDir,fn)+'">'+fn+'</a></td><td>'+ofn+'</td></tr>\n'
+		try:
+			sh.copy2(ofn, join(des,desDir,fn))
+			logEntry = '<tr><td><a href="'+join(des,desDir,fn)+'">'+fn+'</a></td>'
+			print '.',
+		except:
+			logEntry = '<tr><td>'+sys.exc_info()[1]+'</td>'
+			print 'x',
+		logEntry = logEntry+'<td>'+ofn+'</td></tr>\n'
 		log.write(logEntry)
-		sh.copy2(ofn, join(des,desDir,fn))
-		print '.',
+	print
 
 logEntry = '</table>\n</body>\n</html>'
 log.write(logEntry)
